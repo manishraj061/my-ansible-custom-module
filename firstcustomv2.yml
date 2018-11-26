@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  tasks:
+  - name: testing custom module
+    incapsulav2:
+     api_id: xxxxx
+     api_key: xxxxxxxx
+     account_id: xxxxxx
+    register: output
+
+  - name: debugging output
+    debug:
+      msg: "{{ output }}"

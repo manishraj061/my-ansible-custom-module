@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  tasks:
+  - name: testing custom module
+    incapsula:
+     key1: fail me
+     key2: value2
+    register: output
+
+  - name: debugging output
+    debug:
+      msg: "{{ output }}"

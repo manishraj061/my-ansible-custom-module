@@ -1,0 +1,7 @@
+- hosts: web
+  tasks:
+  - name: Test that my module works
+    testplay: 
+    register: result
+
+  - debug: var=result 

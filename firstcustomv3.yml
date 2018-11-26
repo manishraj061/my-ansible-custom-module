@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Use this operation to get the account's login protect user list.
+    incapsula:
+     api_id: xxxxx
+     api_key: xxxxxxxxxx
+     account_id: xxxxxxx
+    register: output
+
+  - name: debugging output
+    debug:
+      msg: "{{ output }}"

@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Use this operation to enable disable site.
+    site_enable_disable:
+      api_id: xxxx
+      api_key: 'xxxxxxxxx'
+      site_id: xxxxxx
+      param: 'active'
+      value: 'active'
+    register: output
+
+  - name: debugging output
+    debug:
+      msg: "{{ output }}"
+

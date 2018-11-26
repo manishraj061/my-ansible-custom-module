@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Use this operation to enable disable site.
+    site_security:
+      api_id: xxxxxxx
+      api_key: 'xxxxx'
+      site_id: xxxxx
+      rule_id: 'api.acl.blacklisted_ips'
+      ips: ''
+    register: output
+
+  - name: debugging output
+    debug:
+      msg: "{{ output }}"
+

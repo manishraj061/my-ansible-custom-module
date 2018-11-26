@@ -1,0 +1,19 @@
+- hosts: localhost
+  vars: 
+    - github_token: "5a737ecc2f28363cff1048b9954c40bd18bb3f4a"
+  tasks:
+  - name: Create a github Repo
+    testgit:
+        github_auth_key: "{{github_token}}"
+        name: "Hello-World"
+        description: "This is your first repository"
+        private: yes
+        has_issues: no
+        has_wiki: no
+        has_downloads: no
+
+  - name: Delete that repo 
+    testgit:
+        github_auth_key: "{{github_token}}"
+        name: "Hello-World"
+        state: absent
