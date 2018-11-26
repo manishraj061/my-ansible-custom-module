@@ -6,13 +6,13 @@ ANSIBLE_METADATA = {
 }
 from ansible.module_utils.basic import AnsibleModule
 import requests,json
-def incapsula():
+def run_module():
     module_args = dict(
-        api_id=dict(type='str', required=True),
-        api_key=dict(type='str', required=True),
-        account_id=dict(type='str', required=True)
+        key1=dict(type='str', required=True),
+        key2=dict(type='str', required=True)
     )
-    url="https://my.incapsula.com/api/prov/v1/sites/lp/users"
+    url="http://httpbin.org/post"
+    r=requests.post(url,data=module_args)   
     result = dict(
         changed=False,
         original_message='',
@@ -20,33 +20,24 @@ def incapsula():
         message2='',
         status_code=''
     )
-    payload=dict(
-	  api_id='',
-          api_key='',
-          account_id=''
-	        )
     module = AnsibleModule(
         argument_spec=module_args,
         supports_check_mode=True
     )
     if module.check_mode:
         return result
-    result['original_message'] = module.params['api_id']
-    result['message1'] = module.params['account_id']
-    payload['api_id']=module.params['api_id']
-    payload['api_key']=module.params['api_key']
-    payload['account_id']=module.params['account_id']
-    if module.params['api_id']:
-       if module.params['api_id'] == 'fail me':
-          result['changed'] = False
-          module.fail_json(msg='You requested this to fail', **result)
-       else:
-          r=requests.post(url,data=payload)
-          result['message2'] = r.json()
-          result['status_code']=r.status_code
-          result['changed'] = False
-          module.exit_json(**result)
+    result['original_message'] = module.params['key1']
+    #result['message1'] = r.json()['form']['key1']
+    result['message1'] = module.params['key1']
+    result['message2'] = r.json()
+    result['status_code']=r.status_code
+    if module.params['key1']:
+        result['changed'] = True
+    if module.params['key1'] == 'fail me':
+        module.fail_json(msg='You requested this to fail', **result)
+    module.exit_json(**result)
 def main():
-    incapsula()
+    run_module()
 if __name__ == '__main__':
     main()
+
