@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Use this operation to add or delete site.
+    add_delete_site:
+      api_id: xxxxxx
+      api_key: 'xxxxxxxxxxx'
+      site_id: xxxxx
+      state: 'absent'
+    register: output
+
+  - name: debugging output
+    debug:
+      msg: "{{ output }}"
+
