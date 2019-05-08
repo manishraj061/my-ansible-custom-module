@@ -1,0 +1,31 @@
+---
+# Playbook is to upload ssl certificates to already  added site
+# #  It can run on either AWS accounts.
+# #  Run as:
+# #      ansible-playbook incapsula-upload-ssl-certificates.yml -e "domainname=example.com" -e "site_id=123456" --ask-vault-pass
+#
+
+- hosts: localhost
+  vars_files:
+    - vars/protected.yml
+  tasks:
+  - name: get site status
+    site_status:
+      api_id: "{{dev_api_id}}"
+      api_key: "{{dev_api_key}}"
+      site_id: "{{site_id}}"
+      tests: 'services'
+    register: site_status
+
+  - name: Set below dns entries to route53 zone
+    debug:
+        msg: "{{site_status.message2.dns}}"
+
+  - name: uploading ssl certificate to site
+    script: "scripts/uploadscripts.sh  {{dev_api_id}} {{dev_api_key}}  {{domainname}} {{site_id}}"
+    register: ssloutput
+
+  - name: debugging curl output status
+    debug:
+      msg: "{{ssloutput}}"
+

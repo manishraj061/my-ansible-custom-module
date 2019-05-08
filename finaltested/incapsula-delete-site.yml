@@ -1,0 +1,23 @@
+---
+# Playbook is to remove site and check status of recently added site
+# #  It can run on either AWS accounts.
+# #  Run as:
+# #
+# # ansible-playbook incapsula-delete-site.yml -e "site_id=<site_id>" --ask-vault-pass
+
+- hosts: localhost
+  vars_files:
+    - vars/protected.yml
+  tasks:
+  - name: Use this operation to add or delete site.
+    add_delete_site:
+      api_id: "{{dev_api_id}}"
+      api_key: "{{dev_api_key}}"
+      site_id: "{{site_id}}"
+      state: absent
+    register: output
+
+  - name: debugging output
+    debug:
+      msg: "{{ output }}"
+

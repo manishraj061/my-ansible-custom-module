@@ -1,0 +1,24 @@
+---
+#Playbook is to put maintenance page on site or block the ips
+##it can run on either aws aws account.
+##run as;
+## To enable ======>   ansible-playbook incapsula-maintenance-page-setup.yml -e "blockipslist=0.0.0.0-255.255.255.255" -e "site_id=<siet-id>" --ask-vault-pass
+## To revert ======>   ansible-playbook incapsula-maintenance-page-setup.yml -e "blockipslist= " -e "site_id=<siet-id>" --ask-vault-pass
+
+- hosts: localhost
+  vars_files:
+    - vars/protected.yml
+  tasks:
+  - name: Use this operation to enable disable site.
+    site_security:
+      api_id: "{{dev_api_id}}"
+      api_key: "{{dev_api_key}}"
+      site_id: "{{site_id}}"
+      rule_id: api.acl.blacklisted_ips
+      ips: "{{blockipslist}}"
+    register: output
+
+  - name: debugging output
+    debug:
+      msg: "{{ output }}"
+

@@ -1,0 +1,28 @@
+---
+# Playbook is to add site and check status of recently added site
+# #  It can run on either AWS accounts.
+# #  Run as:
+# #      ansible-playbook incapsula-add-site.yml -e "domainname=example.com" --ask-vault-pass
+- hosts: localhost
+  vars_files:
+    - vars/protected.yml
+  tasks:
+  - name: Use this operation to add site.
+    add_delete_site:
+       api_id: "{{dev_api_id}}"
+       api_key: "{{dev_api_key}}"
+       domain: "{{domainname}}"
+       account_id: "{{dev_account_id}}"
+       state: present
+    register: output
+  - name: get site status
+    site_status:
+      api_id: "{{dev_api_id}}"
+      api_key: "{{dev_api_key}}"
+      site_id: "{{output.message2.site_id}}"
+      tests: 'services'
+    register: site_status
+  - name: Set below dns entries to route53 zone
+    debug:
+        msg: "{{site_status.message2.dns}}"
+
